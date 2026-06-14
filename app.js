@@ -2,7 +2,7 @@
 function appState() {
   return {
     screen: 'locked', // 'locked' | 'pin' | 'surprise'
-    targetDate: '2026-06-17T00:00:00+07:00', // June 17, 2026 Asia/Jakarta
+    targetDate: '2025-06-17T00:00:00+07:00', // June 17, 2026 Asia/Jakarta
     init() {
       // Check if bypass_timegate is in URL
       const urlParams = new URLSearchParams(window.location.search);
