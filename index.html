@@ -1,0 +1,892 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Happy Birthday, Sayang! 💖</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+                        serif: ['"Playfair Display"', 'Georgia', 'serif'],
+                        handwriting: ['"Dancing Script"', 'cursive'],
+                    },
+                    colors: {
+                        coral: {
+                            400: '#ff7f50',
+                        },
+                        cream: {
+                            100: '#fdfbf7',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Custom CSS Styles -->
+    <link rel="stylesheet" href="style.css">
+    <!-- Alpine.js CDN -->
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <!-- Custom Application JS -->
+    <script src="app.js"></script>
+</head>
+<body class="animate-gradient-bg min-h-screen text-slate-800 font-sans relative overflow-x-hidden">
+
+    <!-- Ambient / Background Falling Particles -->
+    <div class="fixed inset-0 pointer-events-none overflow-hidden z-0" id="particle-container"></div>
+
+    <!-- Main Content wrapper linked to main application state -->
+    <div x-data="appState()" class="relative z-10 min-h-screen flex flex-col justify-between">
+        
+        <!-- Screen 1: Locked Timegate Screen -->
+        <div x-show="screen === 'locked'" class="flex-1 flex flex-col items-center justify-center p-4">
+            <!-- Main Card -->
+            <div class="glass max-w-lg w-full p-8 rounded-3xl text-center shadow-xl border border-white/40 relative overflow-hidden backdrop-blur-md">
+                <!-- Slow pulsing background decorations -->
+                <div class="absolute -top-12 -left-12 w-32 h-32 bg-pink-300/30 rounded-full blur-2xl animate-pulse"></div>
+                <div class="absolute -bottom-12 -right-12 w-32 h-32 bg-amber-300/30 rounded-full blur-2xl animate-pulse" style="animation-delay: 2s;"></div>
+
+                <!-- Lock Icon -->
+                <div class="flex justify-center mb-6">
+                    <div class="relative w-20 h-20 text-rose-500 animate-float-box drop-shadow-[0_0_15px_rgba(244,63,94,0.3)]">
+                        <svg viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" class="w-full h-full">
+                            <!-- Shackle -->
+                            <path d="M 30,45 V 30 A 20,20 0 0,1 70,30 V 45" />
+                            <!-- Heart Body -->
+                            <path d="M 15,55 C 15,35 45,35 50,45 C 55,35 85,35 85,55 C 85,75 50,90 50,90 C 50,90 15,75 15,55 Z" fill="currentColor" fill-opacity="0.1" />
+                            <!-- Keyhole -->
+                            <circle cx="50" cy="62" r="4" fill="currentColor" />
+                            <path d="M 48,64 L 52,64 L 54,74 L 46,74 Z" fill="currentColor" />
+                        </svg>
+                    </div>
+                </div>
+
+                <!-- Title & Subtitle -->
+                <h1 class="font-serif text-3xl font-semibold text-rose-700 tracking-wide mb-2">
+                    A Little Secret...
+                </h1>
+                <p class="font-handwriting text-2xl text-rose-500 mb-6">
+                    From Rendika to Ayyu
+                </p>
+
+                <div class="border-t border-rose-100/50 my-6"></div>
+
+                <p class="text-slate-600 text-sm mb-6 uppercase tracking-wider font-semibold">
+                    Bisa Dibuka Dalam:
+                </p>
+
+                <!-- Countdown Timer Container -->
+                <div x-data="countdown(targetDate)" class="grid grid-cols-4 gap-3 mb-8">
+                    <div class="bg-white/60 backdrop-blur rounded-2xl p-3 shadow-sm">
+                        <span x-text="days" class="block font-serif text-2xl font-bold text-rose-600">00</span>
+                        <span class="text-xs text-slate-500 uppercase">Hari</span>
+                    </div>
+                    <div class="bg-white/60 backdrop-blur rounded-2xl p-3 shadow-sm">
+                        <span x-text="hours" class="block font-serif text-2xl font-bold text-rose-600">00</span>
+                        <span class="text-xs text-slate-500 uppercase">Jam</span>
+                    </div>
+                    <div class="bg-white/60 backdrop-blur rounded-2xl p-3 shadow-sm">
+                        <span x-text="minutes" class="block font-serif text-2xl font-bold text-rose-600">00</span>
+                        <span class="text-xs text-slate-500 uppercase">Menit</span>
+                    </div>
+                    <div class="bg-white/60 backdrop-blur rounded-2xl p-3 shadow-sm">
+                        <span x-text="seconds" class="block font-serif text-2xl font-bold text-rose-600">00</span>
+                        <span class="text-xs text-slate-500 uppercase">Detik</span>
+                    </div>
+                </div>
+
+                <p class="text-rose-400 font-serif italic text-xs">
+                    "Sesuatu yang indah layak untuk ditunggu."
+                </p>
+            </div>
+        </div>
+
+        <!-- Screen 2: PIN Pad Authentication Screen -->
+        <div x-show="screen === 'pin'" class="flex-1 flex flex-col items-center justify-center p-4 relative">
+            <!-- Custom background for PIN page: soft yellow to cream gradient -->
+            <div class="absolute inset-0 bg-gradient-to-br from-amber-50 via-yellow-50 to-cream-100 -z-10 rounded-3xl"></div>
+
+            <!-- Static Corner Ornaments: Sunflowers & Moons -->
+            <div class="fixed top-8 left-8 text-4xl select-none opacity-40 z-10 animate-bounce" style="animation-duration: 6s;">🌻</div>
+            <div class="fixed top-12 right-12 text-4xl select-none opacity-40 z-10 animate-pulse" style="animation-duration: 4s;">🌙</div>
+            <div class="fixed bottom-12 left-12 text-4xl select-none opacity-40 z-10 animate-pulse" style="animation-duration: 5s;">🌙</div>
+            <div class="fixed bottom-8 right-8 text-4xl select-none opacity-40 z-10 animate-bounce" style="animation-duration: 7s;">🌻</div>
+
+            <!-- Main Form & Card Container -->
+            <div x-data="pinHandler()" 
+                 class="glass max-w-sm w-full p-8 rounded-3xl text-center shadow-xl border border-white/40 relative overflow-visible backdrop-blur-md transition-all duration-700"
+                 :class="{ 
+                     'animate-shake border-red-300 bg-red-50/20': isShaking,
+                     'opacity-0 scale-95 pointer-events-none': isFadingOut
+                 }">
+                
+                <!-- Cute Teddy Bear (🧸) Peeking from top-right corner of the card -->
+                <div class="absolute -top-10 -right-6 text-5xl select-none pointer-events-none transform rotate-12 animate-bounce" style="animation-duration: 3s;">
+                    🧸
+                </div>
+
+                <!-- Soft Watercolor pulsing overlays -->
+                <div class="absolute -top-12 -left-12 w-32 h-32 bg-yellow-200/40 rounded-full blur-2xl animate-pulse"></div>
+                <div class="absolute -bottom-12 -right-12 w-32 h-32 bg-amber-200/40 rounded-full blur-2xl animate-pulse" style="animation-delay: 1.5s;"></div>
+
+                <!-- Header -->
+                <div class="mb-2">
+                    <span class="font-handwriting text-3xl text-amber-800 font-semibold block">From: Rendika</span>
+                    <span class="font-handwriting text-3xl text-rose-700 font-semibold block">For: Ayyu</span>
+                </div>
+                <p class="text-xs italic text-rose-400 mb-6 font-serif">a little secret...</p>
+
+                <!-- Gembok Emas Hati SVG with Unlock Scale Up & Fade Out Animation -->
+                <div class="flex justify-center mb-6">
+                    <div class="relative cursor-pointer transition-all duration-700"
+                         :class="{ 'scale-[2.5] opacity-0 rotate-12': isUnlocked, 'hover:scale-105 active:scale-95': !isUnlocked }"
+                         @click="submitPin()">
+                        <svg class="w-20 h-20 text-amber-500 drop-shadow-md transition-all duration-500" 
+                             :class="isUnlocked ? '' : 'animate-pulse'" 
+                             viewBox="0 0 100 100" fill="currentColor">
+                            <!-- Padlock Lock Arch (moves up/opens when unlocked) -->
+                            <path :d="isUnlocked ? 'M30 35 V 20 A 20 20 0 0 1 70 20 V 30' : 'M30 45 V 30 A 20 20 0 0 1 70 30 V 45'" 
+                                  fill="none" stroke="currentColor" stroke-width="8" stroke-linecap="round" class="transition-all duration-500"/>
+                            <!-- Padlock Heart Body -->
+                            <path d="M50 40 C 35 25, 10 35, 10 60 C 10 80, 50 95, 50 95 C 50 95, 90 80, 90 60 C 90 35, 65 25, 50 40 Z"/>
+                            <!-- Keyhole -->
+                            <circle cx="50" cy="58" r="5" fill="#fef6e4"/>
+                            <path d="M48 58 H 52 L 54 72 H 46 Z" fill="#fef6e4"/>
+                        </svg>
+                    </div>
+                </div>
+
+                <!-- PIN Display Indicators -->
+                <div class="flex justify-center space-x-4 mb-8">
+                    <template x-for="i in [1, 2, 3, 4]">
+                        <div class="w-4 h-4 rounded-full border-2 border-amber-300 transition-all duration-300"
+                             :class="pin.length >= i ? 'bg-amber-500 scale-125' : 'bg-transparent'"></div>
+                    </template>
+                </div>
+
+                <!-- 3x4 Claymorphic Keypad -->
+                <div class="grid grid-cols-3 gap-4 max-w-[280px] mx-auto">
+                    <template x-for="num in ['1', '2', '3', '4', '5', '6', '7', '8', '9']">
+                        <button type="button" @click="press(num)" class="clay-key py-3 text-xl font-semibold text-slate-700 select-none" :disabled="isUnlocked">
+                            <span x-text="num"></span>
+                        </button>
+                    </template>
+                    <!-- Backspace -->
+                    <button type="button" @click="del()" class="clay-key py-3 text-lg font-semibold text-slate-500 select-none" :disabled="isUnlocked">
+                        ⌫
+                    </button>
+                    <!-- 0 -->
+                    <button type="button" @click="press('0')" class="clay-key py-3 text-xl font-semibold text-slate-700 select-none" :disabled="isUnlocked">
+                        0
+                    </button>
+                    <!-- OK / Submit -->
+                    <button type="button" @click="submitPin()" class="clay-key py-3 text-base font-bold text-rose-500 select-none" :disabled="isUnlocked">
+                        OK
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Screen 3: Scrapbook Content (Surprise Screen) -->
+        <div x-show="screen === 'surprise'" class="flex-1 flex flex-col justify-between">
+            
+            <!-- Music Controller Container -->
+            <div x-data="musicPlayer('audio/Glenn Fredly - Kasih Putih (Official Audio).mp3')" class="fixed top-6 right-6 z-50 flex items-center space-x-3 bg-white/65 backdrop-blur-md px-4 py-2 rounded-full shadow-lg border border-white/50 hover:shadow-pink-200/50 hover:border-pink-200/50 transition-all duration-300 group">
+                <!-- Mini Equalizer bars when playing -->
+                <div x-show="isPlaying" class="flex items-end space-x-0.5 h-4 w-6">
+                    <span class="w-[3px] bg-rose-500 rounded-full animate-eq-1"></span>
+                    <span class="w-[3px] bg-rose-500 rounded-full animate-eq-2"></span>
+                    <span class="w-[3px] bg-rose-500 rounded-full animate-eq-3"></span>
+                    <span class="w-[3px] bg-rose-500 rounded-full animate-eq-4"></span>
+                </div>
+                <div x-show="!isPlaying" class="flex items-end space-x-0.5 h-4 w-6 opacity-40">
+                    <span class="w-[3px] h-1 bg-rose-400 rounded-full"></span>
+                    <span class="w-[3px] h-1 bg-rose-400 rounded-full"></span>
+                    <span class="w-[3px] h-1 bg-rose-400 rounded-full"></span>
+                    <span class="w-[3px] h-1 bg-rose-400 rounded-full"></span>
+                </div>
+                
+                <span class="text-xs font-semibold text-rose-700/80 select-none group-hover:text-rose-800 transition-colors">Putar Lagu 🎵</span>
+                
+                <button @click="toggle()" 
+                        class="bg-gradient-to-r from-pink-400 to-rose-500 hover:from-pink-500 hover:to-rose-600 p-2 rounded-full text-white transition-all duration-300 hover:scale-110 active:scale-95 shadow-md flex items-center justify-center"
+                        title="Mute / Unmute Music">
+                    <!-- Audio Tag -->
+                    <audio id="bg-music" x-ref="audio" :src="src" loop class="hidden"></audio>
+                    
+                    <!-- Music Icons (Playing vs Muted) -->
+                    <svg x-show="isPlaying" class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 5.25v13.5m-7.5-13.5v13.5" />
+                    </svg>
+                    <svg x-show="!isPlaying" class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.348a1.125 1.125 0 010 1.971l-11.54 6.347a1.125 1.125 0 01-1.667-.985V5.653z" />
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Step-by-Step Slider Container (4 steps) -->
+            <div x-data="{ step: 1, maxStep: 4 }" class="flex-1 flex flex-col justify-between max-w-6xl w-full mx-auto px-6 py-12 relative z-10">
+
+                <!-- Slide Content Wrapper -->
+                <div class="flex-1 flex flex-col justify-center">
+
+                    <!-- Slide 1: Header & Letter -->
+                    <div x-show="step === 1" 
+                         x-transition:enter="transition ease-out duration-500"
+                         x-transition:enter-start="opacity-0 translate-x-8"
+                         x-transition:enter-end="opacity-100 translate-x-0"
+                         class="space-y-12">
+                        <!-- Header Section -->
+                        <header class="text-center space-y-4 animate-slide-down">
+                            <h1 class="font-handwriting text-6xl md:text-7xl text-rose-600 drop-shadow-sm font-bold">
+                                Happy Birthday, Sayang!
+                            </h1>
+                            <p class="font-serif text-lg md:text-2xl text-rose-800 font-medium">
+                                Selamat Hari Spesial untuk Seseorang yang Istimewa
+                            </p>
+                            <!-- Thin line with heart emoji in the middle -->
+                            <div class="flex justify-center items-center space-x-2">
+                                <span class="h-[1px] w-24 bg-rose-200"></span>
+                                <span class="text-rose-500 text-xs">💖</span>
+                                <span class="h-[1px] w-24 bg-rose-200"></span>
+                            </div>
+                        </header>
+
+                        <!-- Sepucuk Surat Component -->
+                        <div class="max-w-3xl mx-auto w-full">
+                            <div x-data="{ 
+                                     visible: false,
+                                     text1: 'Hai,',
+                                     text2: 'Hari ini adalah hari yang luar biasa indah karena di tanggal ini, bumi diberkahi dengan kehadiranmu. Selamat ulang tahun! Aku harap senyum manis di wajahmu tidak pernah memudar, hari-harimu dipenuhi dengan kebahagiaan, dan semua mimpi serta cita-cita yang kamu simpan bisa terwujud satu per satu. Terima kasih telah menjadi jiwa yang begitu hangat, penyabar, dan luar biasa.',
+                                     text3: 'Melalui halaman sederhana ini, aku ingin menunjukkan sedikit apresiasi atas segala tawa yang telah kamu bagikan, serta menjadi pengingat bahwa kamu sangat berharga dan dihargai. Semoga di usiamu yang baru ini, setiap langkahmu dituntun menuju keberhasilan, kesehatanmu selalu terjaga, dan hatimu selalu dilapangkan dengan kedamaian. Ingatlah untuk selalu menyayangi dirimu sendiri terlebih dahulu sebelum hal lainnya.',
+                                     disp1: '',
+                                     disp2: '',
+                                     disp3: '',
+                                     typeSpeed: 30,
+                                     startTyping() {
+                                         let i = 0, j = 0, k = 0;
+                                         
+                                         const typeParagraph1 = () => {
+                                             if (i < this.text1.length) {
+                                                 this.disp1 += this.text1.charAt(i);
+                                                 i++;
+                                                 setTimeout(typeParagraph1, this.typeSpeed);
+                                             } else {
+                                                 setTimeout(typeParagraph2, 400);
+                                             }
+                                         };
+
+                                         const typeParagraph2 = () => {
+                                             if (j < this.text2.length) {
+                                                 this.disp2 += this.text2.charAt(j);
+                                                 j++;
+                                                 setTimeout(typeParagraph2, this.typeSpeed);
+                                             } else {
+                                                 setTimeout(typeParagraph3, 400);
+                                             }
+                                         };
+
+                                         const typeParagraph3 = () => {
+                                             if (k < this.text3.length) {
+                                                 this.disp3 += this.text3.charAt(k);
+                                                 k++;
+                                                 setTimeout(typeParagraph3, this.typeSpeed);
+                                             }
+                                         };
+
+                                         typeParagraph1();
+                                     }
+                                  }" 
+                                  x-init="
+                                     const observer = new IntersectionObserver((entries) => {
+                                         entries.forEach(entry => {
+                                             if (entry.isIntersecting) {
+                                                 visible = true;
+                                                 startTyping();
+                                                 observer.unobserve(entry.target);
+                                             }
+                                         });
+                                     }, { threshold: 0.15 });
+                                     observer.observe($el);
+                                  "
+                                  class="transition-all duration-1000 transform relative overflow-visible"
+                                  :class="visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'">
+                                
+                                <!-- Cute Teddy Bear (🧸) Peeking & Wiggling from top-left boundary of the letter card -->
+                                <div class="absolute -top-10 -left-6 text-5xl select-none pointer-events-none animate-bear-wiggle z-30">
+                                    🧸
+                                </div>
+
+                                <!-- Letter Container -->
+                                <div class="bg-white border-r-8 border-r-pink-400 p-8 md:p-12 rounded-3xl border border-rose-100/50 relative overflow-hidden animate-float-box animate-pulse-glow">
+                                    <!-- Letter Header with Envelope Icon -->
+                                    <div class="flex items-center space-x-3 mb-6 border-b border-rose-100 pb-4">
+                                        <svg class="w-8 h-8 text-rose-500 animate-pulse" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                                        </svg>
+                                        <div>
+                                            <h3 class="font-serif text-xl font-bold text-rose-800">Sepucuk Surat untukmu</h3>
+                                            <p class="text-xs text-rose-400 italic font-sans">(Dibaca perlahan ya...)</p>
+                                        </div>
+                                    </div>
+
+                                    <!-- Letter Body -->
+                                    <div class="font-handwriting text-slate-800 text-2xl leading-relaxed space-y-4 mb-10 text-justify relative z-10 min-h-[350px]">
+                                        <p>
+                                            <span x-text="disp1"></span>
+                                            <span class="inline-block w-[2px] h-5 bg-rose-500 ml-0.5 animate-pulse" x-show="disp1.length > 0 && disp1.length < text1.length"></span>
+                                        </p>
+                                        <p>
+                                            <span x-text="disp2"></span>
+                                            <span class="inline-block w-[2px] h-5 bg-rose-500 ml-0.5 animate-pulse" x-show="disp2.length > 0 && disp2.length < text2.length"></span>
+                                        </p>
+                                        <p>
+                                            <span x-text="disp3"></span>
+                                            <span class="inline-block w-[2px] h-5 bg-rose-500 ml-0.5 animate-pulse" x-show="disp3.length > 0 && disp3.length < text3.length"></span>
+                                        </p>
+                                    </div>
+
+                                    <!-- Stamps in bottom-right corner -->
+                                    <div class="absolute bottom-8 right-8 flex items-center space-x-4 select-none pointer-events-none opacity-95 z-20">
+                                        <!-- Postage Stamp -->
+                                        <div class="w-20 h-24 bg-[#fffefe] border-4 border-dashed border-pink-300 rounded-md flex flex-col items-center justify-center p-1 shadow-sm transform -rotate-6">
+                                            <span class="text-[8px] text-pink-400 font-serif font-bold uppercase tracking-widest border-b border-pink-100 pb-0.5">Postage</span>
+                                            <span class="text-pink-500 font-handwriting text-lg font-bold">Ayyu</span>
+                                            <span class="text-[9px] text-pink-400 font-sans font-semibold mt-1">17 Jun 2026</span>
+                                        </div>
+
+                                        <!-- Wax Seal 'L' -->
+                                        <div class="w-14 h-14 bg-gradient-to-br from-red-600 to-rose-700 rounded-full flex items-center justify-center shadow-lg border-2 border-red-500/30 transform rotate-12 relative">
+                                            <span class="font-serif text-white text-2xl font-black drop-shadow-md">L</span>
+                                            <div class="absolute inset-0.5 border border-white/20 rounded-full"></div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Letter Quote Footer -->
+                                    <div class="border-t border-rose-100/50 pt-6 mt-6 text-center">
+                                        <p class="font-serif italic text-rose-600 text-sm md:text-base">
+                                            "Kamu adalah alasan di balik senyuman seseorang hari ini."
+                                            <span class="inline-block animate-pulse text-rose-500">💖</span>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Slide 2: Coupons Grid -->
+                    <div x-show="step === 2" 
+                         x-transition:enter="transition ease-out duration-500"
+                         x-transition:enter-start="opacity-0 translate-x-8"
+                         x-transition:enter-end="opacity-100 translate-x-0"
+                         class="w-full">
+                        
+                        <!-- Kupon Cinta Component -->
+                        <div x-data="{ visible: false }" 
+                             x-init="
+                                const observer = new IntersectionObserver((entries) => {
+                                    entries.forEach(entry => {
+                                        if (entry.isIntersecting) {
+                                            visible = true;
+                                            observer.unobserve(entry.target);
+                                        }
+                                    });
+                                }, { threshold: 0.15 });
+                                observer.observe($el);
+                             "
+                             class="transition-all duration-1000 transform relative overflow-visible"
+                             :class="visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'">
+
+                            <!-- Section Header -->
+                            <div class="text-center relative max-w-sm mx-auto mb-6">
+                                <!-- Cute Teddy Bear (🧸) Peeking & Wiggling -->
+                                <div class="absolute -top-7 -left-7 text-4xl select-none pointer-events-none animate-bear-wiggle">
+                                    🧸
+                                </div>
+                                <h2 class="font-serif text-2xl md:text-3xl text-rose-800 font-bold">Kupon Cinta Khusus</h2>
+                                <p class="font-handwriting text-xl text-rose-500 mt-1">Ketuk kupon untuk menukarkan hadiahmu!</p>
+                            </div>
+
+                            <!-- Coupons Grid -->
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto py-4">
+                                 <!-- Coupon 1 -->
+                                <div x-data="{ open: false }" class="h-48 w-full cursor-pointer perspective-1000 transform hover:-translate-y-2 transition-transform duration-300" @click="open = !open">
+                                    <div class="relative w-full h-full transition-transform duration-700 transform-style-3d rounded-2xl animate-coupon-glow" :class="open ? 'rotate-y-180' : ''">
+                                        <!-- Front -->
+                                        <div class="absolute inset-0 w-full h-full bg-gradient-to-br from-coral-400 via-orange-400 to-pink-500 rounded-2xl backface-hidden p-6 flex flex-col justify-between text-white border-2 border-white/20 overflow-hidden">
+                                            <div class="ticket-notch-l"></div>
+                                            <div class="ticket-notch-r"></div>
+                                            <div class="flex justify-between items-start">
+                                                <span class="text-xs uppercase tracking-widest font-mono bg-white/20 px-2 py-0.5 rounded">Love Ticket #01</span>
+                                                <span class="text-2xl animate-pulse">🎟️</span>
+                                            </div>
+                                            <div class="text-center my-auto">
+                                                <h4 class="font-serif text-xl font-bold tracking-wide">Kupon Jalan-Jalan</h4>
+                                                <p class="text-[10px] text-pink-100 mt-1 italic">Ketuk untuk membuka</p>
+                                            </div>
+                                            <div class="text-right text-[10px] font-mono">VALID FOREVER</div>
+                                        </div>
+                                        <!-- Back -->
+                                        <div class="absolute inset-0 w-full h-full bg-white rounded-2xl rotate-y-180 backface-hidden p-6 flex flex-col justify-between border-2 border-pink-300 overflow-hidden">
+                                            <div class="ticket-notch-l"></div>
+                                            <div class="ticket-notch-r"></div>
+                                            <div class="flex justify-between items-center text-pink-500 border-b border-rose-100 pb-2">
+                                                <span class="text-xs uppercase font-mono tracking-wider font-bold text-rose-500">KUPON DIGUNAKAN</span>
+                                                <span class="text-lg">🚗</span>
+                                            </div>
+                                            <div class="text-center my-auto px-2">
+                                                <p class="text-xs text-slate-500 mb-1">Jalan-jalan seru berdua ke mana pun yang kamu mau untuk membuat kenangan manis baru!</p>
+                                                <span class="font-handwriting text-xl font-bold text-rose-500 block">"Road Trip & Adventure"</span>
+                                            </div>
+                                            <div class="text-center text-[9px] text-slate-400 font-mono">Kode: ROADTRIP17</div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Coupon 2 -->
+                                <div x-data="{ open: false }" class="h-48 w-full cursor-pointer perspective-1000 transform hover:-translate-y-2 transition-transform duration-300" @click="open = !open">
+                                    <div class="relative w-full h-full transition-transform duration-700 transform-style-3d rounded-2xl animate-coupon-glow" :class="open ? 'rotate-y-180' : ''">
+                                        <!-- Front -->
+                                        <div class="absolute inset-0 w-full h-full bg-gradient-to-br from-amber-400 via-yellow-400 to-amber-500 rounded-2xl backface-hidden p-6 flex flex-col justify-between text-white border-2 border-white/20 overflow-hidden">
+                                            <div class="ticket-notch-l"></div>
+                                            <div class="ticket-notch-r"></div>
+                                            <div class="flex justify-between items-start">
+                                                <span class="text-xs uppercase tracking-widest font-mono bg-white/20 px-2 py-0.5 rounded">Love Ticket #02</span>
+                                                <span class="text-2xl animate-pulse">🎟️</span>
+                                            </div>
+                                            <div class="text-center my-auto">
+                                                <h4 class="font-serif text-xl font-bold tracking-wide">Kupon Pelukan Hangat</h4>
+                                                <p class="text-[10px] text-amber-100 mt-1 italic">Ketuk untuk membuka</p>
+                                            </div>
+                                            <div class="text-right text-[10px] font-mono">VALID FOREVER</div>
+                                        </div>
+                                        <!-- Back -->
+                                        <div class="absolute inset-0 w-full h-full bg-white rounded-2xl rotate-y-180 backface-hidden p-6 flex flex-col justify-between border-2 border-amber-300 overflow-hidden">
+                                            <div class="ticket-notch-l"></div>
+                                            <div class="ticket-notch-r"></div>
+                                            <div class="flex justify-between items-center text-amber-600 border-b border-amber-100 pb-2">
+                                                <span class="text-xs uppercase font-mono tracking-wider font-bold">KUPON DIGUNAKAN</span>
+                                                <span class="text-lg">🤗</span>
+                                            </div>
+                                            <div class="text-center my-auto px-2">
+                                                <p class="text-xs text-slate-500 mb-1">Pelukan menenangkan yang erat kapan pun kamu membutuhkannya!</p>
+                                                <span class="font-handwriting text-xl font-bold text-amber-600 block">"Warmest Bear Hug"</span>
+                                            </div>
+                                            <div class="text-center text-[9px] text-slate-400 font-mono">Kode: HUG1706</div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Coupon 3 -->
+                                <div x-data="{ open: false }" class="h-48 w-full cursor-pointer perspective-1000 transform hover:-translate-y-2 transition-transform duration-300" @click="open = !open">
+                                    <div class="relative w-full h-full transition-transform duration-700 transform-style-3d rounded-2xl animate-coupon-glow" :class="open ? 'rotate-y-180' : ''">
+                                        <!-- Front -->
+                                        <div class="absolute inset-0 w-full h-full bg-gradient-to-br from-pink-400 via-rose-400 to-rose-600 rounded-2xl backface-hidden p-6 flex flex-col justify-between text-white border-2 border-white/20 overflow-hidden">
+                                            <div class="ticket-notch-l"></div>
+                                            <div class="ticket-notch-r"></div>
+                                            <div class="flex justify-between items-start">
+                                                <span class="text-xs uppercase tracking-widest font-mono bg-white/20 px-2 py-0.5 rounded">Love Ticket #03</span>
+                                                <span class="text-2xl animate-pulse">🎟️</span>
+                                            </div>
+                                            <div class="text-center my-auto">
+                                                <h4 class="font-serif text-xl font-bold tracking-wide">Kupon Ice Cream Date</h4>
+                                                <p class="text-[10px] text-rose-100 mt-1 italic">Ketuk untuk membuka</p>
+                                            </div>
+                                            <div class="text-right text-[10px] font-mono">VALID FOREVER</div>
+                                        </div>
+                                        <!-- Back -->
+                                        <div class="absolute inset-0 w-full h-full bg-white rounded-2xl rotate-y-180 backface-hidden p-6 flex flex-col justify-between border-2 border-rose-300 overflow-hidden">
+                                            <div class="ticket-notch-l"></div>
+                                            <div class="ticket-notch-r"></div>
+                                            <div class="flex justify-between items-center text-rose-500 border-b border-rose-100 pb-2">
+                                                <span class="text-xs uppercase font-mono tracking-wider font-bold">KUPON DIGUNAKAN</span>
+                                                <span class="text-lg">🍦</span>
+                                            </div>
+                                            <div class="text-center my-auto px-2">
+                                                <p class="text-xs text-slate-500 mb-1">Membeli es krim rasa favoritmu sebanyak 2 scoop penuh kebahagiaan!</p>
+                                                <span class="font-handwriting text-xl font-bold text-rose-600 block">"Sweet Ice Cream Date"</span>
+                                            </div>
+                                            <div class="text-center text-[9px] text-slate-400 font-mono">Kode: SWEETICECREAM17</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Slide 3: FAQ Cinta (Q&A Accordion) -->
+                    <div x-show="step === 3" 
+                         x-transition:enter="transition ease-out duration-500"
+                         x-transition:enter-start="opacity-0 translate-x-8"
+                         x-transition:enter-end="opacity-100 translate-x-0"
+                         class="w-full">
+                        
+                        <!-- FAQ Cinta Component -->
+                        <div class="max-w-2xl mx-auto py-6 relative overflow-visible" x-data="{ active: null }">
+                            <!-- Section Header -->
+                            <div class="text-center relative max-w-sm mx-auto mb-10">
+                                <!-- Cute Teddy Bear (🧸) Peeking & Wiggling -->
+                                <div class="absolute -top-7 -left-7 text-4xl select-none pointer-events-none animate-bear-wiggle">
+                                    🧸
+                                </div>
+                                <h2 class="font-serif text-2xl md:text-3xl text-rose-800 font-bold">FAQ: Frequently Asked Questions</h2>
+                                <p class="font-handwriting text-xl text-rose-500 mt-1">(Versi Kita berdua)</p>
+                            </div>
+
+                            <!-- Accordion Wrapper -->
+                            <div class="space-y-4">
+                                <!-- FAQ 1 -->
+                                <div class="glass rounded-2xl shadow-sm border border-white/40 overflow-hidden transition-all duration-300">
+                                    <button @click="active === 1 ? active = null : active = 1" 
+                                            class="w-full text-left p-5 font-serif text-lg font-bold text-rose-800 flex justify-between items-center focus:outline-none select-none">
+                                        <span>Kenapa harus Ayyu?</span>
+                                        <span class="text-rose-500 transform transition-transform duration-300" :class="active === 1 ? 'rotate-180' : ''">▼</span>
+                                    </button>
+                                    <div x-show="active === 1" 
+                                         x-transition:enter="transition ease-out duration-300"
+                                         x-transition:enter-start="opacity-0 max-h-0"
+                                         x-transition:enter-end="opacity-100 max-h-40"
+                                         class="px-5 pb-5 border-t border-rose-100/50">
+                                        <p class="font-handwriting text-rose-700 text-xl leading-relaxed font-bold pt-4">
+                                            Karena cuma kamu yang bisa bikin hari-hari biasa jadi luar biasa. Setiap hal kecil terasa indah saat dilewati bersamamu.
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <!-- FAQ 2 -->
+                                <div class="glass rounded-2xl shadow-sm border border-white/40 overflow-hidden transition-all duration-300">
+                                    <button @click="active === 2 ? active = null : active = 2" 
+                                            class="w-full text-left p-5 font-serif text-lg font-bold text-rose-800 flex justify-between items-center focus:outline-none select-none">
+                                        <span>Apa hal yang paling aku suka dari kamu?</span>
+                                        <span class="text-rose-500 transform transition-transform duration-300" :class="active === 2 ? 'rotate-180' : ''">▼</span>
+                                    </button>
+                                    <div x-show="active === 2" 
+                                         x-transition:enter="transition ease-out duration-300"
+                                         x-transition:enter-start="opacity-0 max-h-0"
+                                         x-transition:enter-end="opacity-100 max-h-40"
+                                         class="px-5 pb-5 border-t border-rose-100/50">
+                                        <p class="font-handwriting text-rose-700 text-xl leading-relaxed font-bold pt-4">
+                                            Senyummu yang tulus, kesabaranmu yang menenangkan, dan cara kamu selalu menatapku penuh kehangatan.
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <!-- FAQ 3 -->
+                                <div class="glass rounded-2xl shadow-sm border border-white/40 overflow-hidden transition-all duration-300">
+                                    <button @click="active === 3 ? active = null : active = 3" 
+                                            class="w-full text-left p-5 font-serif text-lg font-bold text-rose-800 flex justify-between items-center focus:outline-none select-none">
+                                        <span>Harapan buat kita?</span>
+                                        <span class="text-rose-500 transform transition-transform duration-300" :class="active === 3 ? 'rotate-180' : ''">▼</span>
+                                    </button>
+                                    <div x-show="active === 3" 
+                                         x-transition:enter="transition ease-out duration-300"
+                                         x-transition:enter-start="opacity-0 max-h-0"
+                                         x-transition:enter-end="opacity-100 max-h-40"
+                                         class="px-5 pb-5 border-t border-rose-100/50">
+                                        <p class="font-handwriting text-rose-700 text-xl leading-relaxed font-bold pt-4">
+                                            Tumbuh bareng, ketawa bareng, melewati segala musim kehidupan sampai tua nanti. Menjaga rasa sayang ini tetap mekar indah.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Slide 4: Polaroid Gallery & Penutup -->
+                    <div x-show="step === 4" 
+                         x-transition:enter="transition ease-out duration-500"
+                         x-transition:enter-start="opacity-0 translate-x-8"
+                         x-transition:enter-end="opacity-100 translate-x-0"
+                         class="w-full space-y-12">
+                        
+                        <!-- Galeri Kenangan Component -->
+                        <div x-data="{ 
+                                 visible: false, 
+                                 activePhoto: null,
+                                 photos: [
+                                    {
+                                        id: 1,
+                                        title: 'Senyum Bersamamu',
+                                        desc: 'Tawa dan senyuman manis kita yang selalu menghangatkan hari-hari kita.',
+                                        src: 'images/gambar1.jpeg',
+                                        tilt: '2deg',
+                                        tiltRev: '-2deg',
+                                        delay: '100ms',
+                                        duration: '6s',
+                                        emoji: '🥰'
+                                    },
+                                    {
+                                        id: 2,
+                                        title: 'Kencan Bioskop',
+                                        desc: 'Momen seru nonton berdua, menikmati waktu santai dan cerita menyenangkan bersamamu.',
+                                        src: 'images/gambar2.jpeg',
+                                        tilt: '-3deg',
+                                        tiltRev: '3deg',
+                                        delay: '200ms',
+                                        duration: '7s',
+                                        emoji: '🎬'
+                                    },
+                                    {
+                                        id: 3,
+                                        title: 'Sahabat Primata',
+                                        desc: 'Jalan-jalan seru menikmati alam bebas dan berpose lucu di depan cermin bersama.',
+                                        src: 'images/gambar3.jpeg',
+                                        tilt: '4deg',
+                                        tiltRev: '-4deg',
+                                        delay: '300ms',
+                                        duration: '8s',
+                                        emoji: '🐒'
+                                    },
+                                    {
+                                        id: 4,
+                                        title: 'Dekat di Hati',
+                                        desc: 'Dekapan hangat dalam keseruan foto box, membuat dunia serasa milik kita berdua saja.',
+                                        src: 'images/gambar4.jpeg',
+                                        tilt: '-4deg',
+                                        tiltRev: '4deg',
+                                        delay: '400ms',
+                                        duration: '6.5s',
+                                        emoji: '📸'
+                                    },
+                                    {
+                                        id: 5,
+                                        title: 'Bando Lucu',
+                                        desc: 'Keseruan memakai bando gemas dan berpose konyol bersama di studio photo box.',
+                                        src: 'images/gambar5.jpeg',
+                                        tilt: '3deg',
+                                        tiltRev: '-3deg',
+                                        delay: '500ms',
+                                        duration: '7.5s',
+                                        emoji: '✨'
+                                    },
+                                    {
+                                        id: 6,
+                                        title: 'Pelukan Hangat',
+                                        desc: 'Momen manis dan pelukan erat penuh rasa sayang yang menentramkan jiwa.',
+                                        src: 'images/gambar6.jpg',
+                                        tilt: '-2deg',
+                                        tiltRev: '2deg',
+                                        delay: '600ms',
+                                        duration: '7s',
+                                        emoji: '🫂'
+                                    },
+                                    {
+                                        id: 7,
+                                        title: 'Daong Hutan Pinus',
+                                        desc: 'Malam yang indah menikmati sejuknya udara dan gemerlap lampu di Daong Hutan Pinus.',
+                                        src: 'images/gambar7.jpg',
+                                        tilt: '5deg',
+                                        tiltRev: '-5deg',
+                                        delay: '700ms',
+                                        duration: '8.5s',
+                                        emoji: '🌲'
+                                    },
+                                    {
+                                        id: 8,
+                                        title: 'Momen Istimewa',
+                                        desc: 'Setiap detik bersamamu adalah momen menakjubkan yang akan selalu kuingat.',
+                                        src: 'images/gambar8.jpg',
+                                        tilt: '-3deg',
+                                        tiltRev: '3deg',
+                                        delay: '800ms',
+                                        duration: '6.8s',
+                                        emoji: '💖'
+                                    }
+                                 ]
+                              }" 
+                              x-init="
+                                 const observer = new IntersectionObserver((entries) => {
+                                     entries.forEach(entry => {
+                                         if (entry.isIntersecting) {
+                                             visible = true;
+                                             observer.unobserve(entry.target);
+                                         }
+                                     });
+                                 }, { threshold: 0.05 });
+                                 observer.observe($el);
+                              "
+                              class="py-12 max-w-6xl mx-auto px-4 relative overflow-visible">
+
+                            <!-- Section Header -->
+                            <div class="text-center relative max-w-sm mx-auto mb-12">
+                                <!-- Cute Teddy Bear (🧸) Peeking & Wiggling -->
+                                <div class="absolute -top-7 -left-7 text-4xl select-none pointer-events-none animate-bear-wiggle">
+                                    🧸
+                                </div>
+                                <h2 class="font-serif text-3xl md:text-4xl text-rose-800 font-bold tracking-wide">Galeri Kenangan</h2>
+                                <p class="font-handwriting text-2xl text-rose-500 mt-1">Halaman-halaman penuh senyuman dan kebersamaan</p>
+                            </div>
+                            
+                            <!-- Polaroid Grid Collage -->
+                            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+                                <template x-for="photo in photos" :key="photo.id">
+                                    <div @click="activePhoto = photo"
+                                         class="bg-[#faf6ee] p-4 pb-7 shadow-lg rounded border border-[#e4dec9]/60 transform hover:scale-105 hover:rotate-0 hover:z-30 hover:-translate-y-2 transition-all duration-300 ease-out cursor-pointer relative group opacity-0"
+                                         :class="visible ? 'animate-zoom-in-up' : ''"
+                                         :style="`animation-delay: ${photo.delay}; --idle-rot: ${photo.tilt}; --idle-rot-reverse: ${photo.tiltRev}; animation: visible ? 'zoomInUp 1.2s cubic-bezier(0.175, 0.885, 0.32, 1.275) ' + photo.delay + ' forwards, polaroidPendulum ' + photo.duration + ' ease-in-out infinite ' + photo.delay : 'none'`">
+                                        
+                                        <!-- Red Heart Pin -->
+                                        <div class="absolute -top-3 left-1/2 -translate-x-1/2 text-2xl z-20 drop-shadow-md select-none transform group-hover:scale-125 transition-transform duration-300">
+                                            📌
+                                        </div>
+
+                                        <!-- Picture slot -->
+                                        <div class="overflow-hidden aspect-square rounded-sm bg-slate-200 relative">
+                                            <img :src="photo.src" :alt="photo.title" class="w-full h-full object-cover select-none transition-transform duration-700 group-hover:scale-110">
+                                            <!-- Hover Overlay -->
+                                            <div class="absolute inset-0 bg-rose-950/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                                                <span class="bg-white/90 p-3 rounded-full text-rose-600 shadow-md transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
+                                                    🔍 Lihat Detail
+                                                </span>
+                                            </div>
+                                        </div>
+
+                                        <!-- Caption text -->
+                                        <p class="font-handwriting text-center text-rose-700 text-2xl mt-4 leading-tight tracking-wide" x-text="photo.title"></p>
+                                        <div class="text-center mt-1 text-sm text-amber-600 font-semibold" x-text="photo.emoji"></div>
+                                    </div>
+                                </template>
+                            </div>
+
+                            <!-- Premium Lightbox Modal Viewer -->
+                            <div x-show="activePhoto !== null"
+                                 class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/85 backdrop-blur-md"
+                                 x-transition:enter="transition ease-out duration-300"
+                                 x-transition:enter-start="opacity-0"
+                                 x-transition:enter-end="opacity-100"
+                                 x-transition:leave="transition ease-in duration-200"
+                                 x-transition:leave-start="opacity-100"
+                                 x-transition:leave-end="opacity-0"
+                                 @click="activePhoto = null"
+                                 @keydown.escape.window="activePhoto = null">
+                                
+                                <!-- Modal Card Content -->
+                                <div class="bg-[#faf6ee] max-w-2xl w-full p-6 md:p-8 rounded-3xl border border-[#e4dec9] shadow-2xl relative flex flex-col md:flex-row gap-6 items-center"
+                                     x-show="activePhoto !== null"
+                                     x-transition:enter="transition ease-out duration-400 transform"
+                                     x-transition:enter-start="opacity-0 scale-90 translate-y-8"
+                                     x-transition:enter-end="opacity-100 scale-100 translate-y-0"
+                                     x-transition:leave="transition ease-in duration-200 transform"
+                                     x-transition:leave-start="opacity-100 scale-100 translate-y-0"
+                                     x-transition:leave-end="opacity-0 scale-90 translate-y-8"
+                                     @click.stop>
+                                    
+                                    <!-- Pin decoration inside modal -->
+                                    <div class="absolute -top-4 left-1/2 -translate-x-1/2 text-4xl drop-shadow-lg select-none">
+                                        💝
+                                    </div>
+
+                                    <!-- Close Button -->
+                                    <button @click="activePhoto = null" 
+                                            class="absolute top-4 right-4 w-9 h-9 rounded-full bg-rose-100/80 hover:bg-rose-200 text-rose-700 hover:text-rose-900 transition-colors flex items-center justify-center font-bold text-lg shadow-sm">
+                                        ✕
+                                    </button>
+
+                                    <!-- Large Image -->
+                                    <div class="w-full md:w-1/2 aspect-square rounded-2xl overflow-hidden shadow-inner bg-slate-100 border border-white/60">
+                                        <img :src="activePhoto ? activePhoto.src : ''" :alt="activePhoto ? activePhoto.title : ''" class="w-full h-full object-cover">
+                                    </div>
+
+                                    <!-- Description Text Area -->
+                                    <div class="w-full md:w-1/2 flex flex-col justify-center text-center md:text-left space-y-4">
+                                        <div>
+                                            <span class="text-3xl" x-text="activePhoto ? activePhoto.emoji : ''"></span>
+                                            <h3 class="font-serif text-3xl font-bold text-rose-800 mt-1" x-text="activePhoto ? activePhoto.title : ''"></h3>
+                                        </div>
+                                        <div class="w-12 h-[3px] bg-rose-400 rounded-full mx-auto md:mx-0"></div>
+                                        <p class="font-handwriting text-2xl text-rose-600 font-bold leading-normal" x-text="activePhoto ? activePhoto.desc : ''"></p>
+                                        
+                                        <div class="pt-4">
+                                            <button @click="activePhoto = null" 
+                                                    class="bg-gradient-to-r from-pink-400 to-rose-500 text-white font-serif px-6 py-2.5 rounded-full text-sm font-bold shadow-md hover:scale-105 transition-transform duration-200">
+                                                Tutup Kenangan ✨
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Pill shape ribbon button with neon glow effect -->
+                        <div class="flex justify-center pt-2">
+                            <button class="bg-gradient-to-r from-orange-400 via-pink-500 to-rose-500 text-white font-serif px-10 py-4 rounded-full shadow-[0_0_15px_rgba(236,72,153,0.5)] transform transition-all duration-300 hover:scale-105 active:scale-95 hover:animate-pulse font-bold tracking-wider relative overflow-hidden flex items-center space-x-2 select-none">
+                                <span>✨</span>
+                                <span>Memory is our treasure</span>
+                                <span>✨</span>
+                            </button>
+                        </div>
+
+                        <!-- Footer actions: Re-lock -->
+                        <footer class="flex justify-center">
+                            <button @click="$dispatch('locked-again')" class="glass px-6 py-3 rounded-full text-xs text-rose-500 hover:text-rose-700 transition-all duration-300 font-bold uppercase tracking-wider hover:scale-105 active:scale-95 flex items-center space-x-2">
+                                <span>🔓</span>
+                                <span>KUNCI KEMBALI SCRAPBOOK</span>
+                            </button>
+                        </footer>
+                    </div>
+
+                </div>
+
+                <!-- Navigation Buttons (Back & Next) -->
+                <div class="flex justify-between items-center mt-12 max-w-lg w-full mx-auto relative z-25">
+                    <!-- Back Button -->
+                    <button x-show="step > 1" 
+                            @click="step--" 
+                            class="glass px-6 py-3 rounded-full text-rose-600 font-serif font-bold text-sm tracking-wide transition-all duration-300 hover:bg-pink-50 hover:scale-105 flex items-center space-x-2 shadow-md">
+                        <span>←</span>
+                        <span>Kembali</span>
+                    </button>
+                    
+                    <!-- Spacer -->
+                    <div x-show="step === 1" class="flex-1"></div>
+
+                    <!-- Next Button -->
+                    <button x-show="step < maxStep" 
+                            @click="step++" 
+                            class="bg-gradient-to-r from-pink-400 to-rose-500 text-white font-serif font-bold text-sm tracking-wide px-6 py-3 rounded-full transition-all duration-300 hover:scale-105 hover:shadow-lg flex items-center space-x-2 shadow-md">
+                        <span>Selanjutnya</span>
+                        <span>→</span>
+                    </button>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Script to Generate Particle Background Dynamically -->
+    <script>
+        const container = document.getElementById('particle-container');
+        const elements = ['🌸', '💖', '✨', '🌸', '💖', '✨'];
+        for (let i = 0; i < 30; i++) {
+            const span = document.createElement('span');
+            span.className = 'absolute -top-10 select-none pointer-events-none animate-particle';
+            const left = Math.floor(Math.random() * 96) + 2;
+            const delay = Math.floor(Math.random() * 20) - 20;
+            const duration = Math.floor(Math.random() * 10) + 8;
+            const size = Math.floor(Math.random() * 15) + 14;
+            const maxOpacity = (Math.floor(Math.random() * 21) + 15) / 100;
+            const floatX = Math.floor(Math.random() * 160) - 80;
+            const rotAngle = Math.floor(Math.random() * 360) + 180;
+            const scaleVal = (Math.floor(Math.random() * 7) + 8) / 10;
+            
+            span.innerText = elements[Math.floor(Math.random() * elements.length)];
+            span.style.left = `${left}%`;
+            span.style.animationDelay = `${delay}s`;
+            span.style.animationDuration = `${duration}s`;
+            span.style.fontSize = `${size}px`;
+            span.style.setProperty('--max-opacity', maxOpacity);
+            span.style.setProperty('--float-x', `${floatX}px`);
+            span.style.setProperty('--rot-angle', `${rotAngle}deg`);
+            span.style.setProperty('--scale-val', scaleVal);
+            
+            container.appendChild(span);
+        }
+    </script>
+</body>
+</html>

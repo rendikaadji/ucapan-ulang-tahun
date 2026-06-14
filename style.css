@@ -1,0 +1,264 @@
+@import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap');
+
+/* Font declarations for fallback */
+body {
+  font-family: 'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif;
+}
+
+.font-serif {
+  font-family: 'Playfair Display', Georgia, serif;
+}
+
+.font-handwriting {
+  font-family: 'Dancing Script', cursive;
+}
+
+/* Equalizer Bars keyframes */
+@keyframes eqBar {
+  0%, 100% { height: 4px; }
+  50% { height: 20px; }
+}
+
+.animate-eq-1 { animation: eqBar 0.8s ease-in-out infinite; }
+.animate-eq-2 { animation: eqBar 0.5s ease-in-out infinite 0.2s; }
+.animate-eq-3 { animation: eqBar 0.7s ease-in-out infinite 0.1s; }
+.animate-eq-4 { animation: eqBar 0.6s ease-in-out infinite 0.3s; }
+
+/* 1. Shifting Gradient Background */
+@keyframes shiftGradient {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.animate-gradient-bg {
+  background: linear-gradient(-45deg, #fff0f6, #fff4e6, #f3f0ff, #fff5f5);
+  background-size: 400% 400%;
+  animation: shiftGradient 15s ease infinite;
+}
+
+/* 2. Floating & Swaying Particles (Floating Downwards) */
+@keyframes floatDown {
+  0% {
+    transform: translateY(-10vh) translateX(0) rotate(0deg) scale(0.5);
+    opacity: 0;
+  }
+  10% {
+    opacity: var(--max-opacity, 0.4);
+  }
+  90% {
+    opacity: var(--max-opacity, 0.4);
+  }
+  100% {
+    transform: translateY(110vh) translateX(var(--float-x, 50px)) rotate(var(--rot-angle, 360deg)) scale(var(--scale-val, 1.2));
+    opacity: 0;
+  }
+}
+
+.animate-particle {
+  animation: floatDown var(--fall-duration, 12s) linear infinite;
+}
+
+/* 3. Floating / Breathing Container */
+@keyframes floatBox {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.animate-float-box {
+  animation: floatBox 4s ease-in-out infinite;
+}
+
+/* 4. Soft Pulsing Glow */
+@keyframes pulseGlow {
+  0%, 100% {
+    box-shadow: 0 10px 25px -5px rgba(244, 63, 94, 0.1), 0 0 15px 0px rgba(244, 63, 94, 0.05);
+  }
+  50% {
+    box-shadow: 0 20px 25px -5px rgba(244, 63, 94, 0.2), 0 0 25px 8px rgba(244, 63, 94, 0.15);
+  }
+}
+
+.animate-pulse-glow {
+  animation: pulseGlow 4s ease-in-out infinite;
+}
+
+/* 5. Teddy Bear Wiggle */
+@keyframes bearWiggle {
+  0%, 100% {
+    transform: rotate(12deg) translateY(0);
+  }
+  50% {
+    transform: rotate(-10deg) translateY(-2px);
+  }
+}
+
+.animate-bear-wiggle {
+  animation: bearWiggle 3s ease-in-out infinite;
+}
+
+/* 6. Gold/Pink Coupon Pulse Border Glow */
+@keyframes couponGlow {
+  0%, 100% {
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 0 8px 1px rgba(244, 63, 94, 0.1);
+  }
+  50% {
+    box-shadow: 0 10px 15px -3px rgba(244, 63, 94, 0.25), 0 0 15px 5px rgba(251, 191, 36, 0.4);
+  }
+}
+
+.animate-coupon-glow {
+  animation: couponGlow 3s ease-in-out infinite;
+}
+
+/* 7. Polaroid Pendulum Rotation */
+@keyframes polaroidPendulum {
+  0%, 100% {
+    transform: rotate(var(--idle-rot, -3deg));
+  }
+  50% {
+    transform: rotate(var(--idle-rot-reverse, 3deg));
+  }
+}
+
+/* Polaroid Entrance zoom-in-up with spring effect */
+@keyframes zoomInUp {
+  0% {
+    opacity: 0;
+    transform: scale3d(0.3, 0.3, 0.3) translate3d(0, 80px, 0);
+  }
+  60% {
+    opacity: 1;
+    transform: scale3d(1.1, 1.1, 1.1) translate3d(0, -10px, 0);
+  }
+  80% {
+    transform: scale3d(0.97, 0.97, 0.97) translate3d(0, 5px, 0);
+  }
+  100% {
+    opacity: 1;
+    transform: scale3d(1, 1, 1) translate3d(0, 0, 0);
+  }
+}
+
+.animate-zoom-in-up {
+  animation: zoomInUp 1.2s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+/* Glassmorphic premium upgrade */
+.glass {
+  background: rgba(255, 255, 255, 0.55);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.45);
+  box-shadow: 
+    0 10px 30px -5px rgba(244, 63, 94, 0.08), 
+    0 4px 6px -2px rgba(0, 0, 0, 0.02),
+    inset 0 1px 1px rgba(255, 255, 255, 0.4);
+}
+
+/* Gold foil styled glowing text */
+.text-gold-gradient {
+  background: linear-gradient(135deg, #b89742 0%, #f7e2a9 50%, #b89742 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 0px 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+/* Ticket Notches for Premium Coupons */
+.ticket-notch-l, .ticket-notch-r {
+  position: absolute;
+  top: 50%;
+  width: 18px;
+  height: 18px;
+  background: #fff0f6; /* Blends with shifting gradient */
+  border-radius: 50%;
+  transform: translateY(-50%);
+  z-index: 20;
+  box-shadow: inset -2px 0 3px rgba(0, 0, 0, 0.05);
+}
+.ticket-notch-l {
+  left: -9px;
+  box-shadow: inset -3px 0 4px rgba(0,0,0,0.06);
+}
+.ticket-notch-r {
+  right: -9px;
+  box-shadow: inset 3px 0 4px rgba(0,0,0,0.06);
+}
+
+/* Card 3D Flip */
+.perspective-1000 {
+  perspective: 1000px;
+}
+
+.backface-hidden {
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.rotate-y-180 {
+  transform: rotateY(180deg);
+}
+
+.transform-style-3d {
+  transform-style: preserve-3d;
+}
+
+/* Keypad Shake Animation on Error */
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  20%, 60% { transform: translateX(-8px); }
+  40%, 80% { transform: translateX(8px); }
+}
+
+.animate-shake {
+  animation: shake 0.4s ease-in-out;
+}
+
+/* Claymorphic keys for keypad with neon soft gold styling */
+.clay-key {
+  background: rgba(255, 255, 255, 0.65);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: 20px;
+  box-shadow: 
+    inset 0 3px 6px rgba(255, 255, 255, 0.9),
+    0 6px 12px -3px rgba(139, 92, 26, 0.08),
+    inset 0 -3px 6px rgba(0, 0, 0, 0.03);
+  transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.clay-key:hover:not(:disabled) {
+  transform: translateY(-2px);
+  background: rgba(255, 255, 255, 0.85);
+  box-shadow: 
+    inset 0 3px 6px rgba(255, 255, 255, 0.9),
+    0 10px 15px -3px rgba(244, 63, 94, 0.15),
+    inset 0 -3px 6px rgba(0, 0, 0, 0.02);
+}
+
+.clay-key:active:not(:disabled) {
+  transform: scale(0.95) translateY(0);
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: 
+    inset 0 1px 3px rgba(255, 255, 255, 0.8),
+    0 4px 6px -2px rgba(244, 63, 94, 0.1);
+}
+
+/* Custom Scrollbar for premium feel */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: rgba(255, 240, 246, 0.5);
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(244, 63, 94, 0.2);
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(244, 63, 94, 0.4);
+}
+
